@@ -1,36 +1,835 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Megan Zhang | Portfolio</title>
+  <style>
+    :root {
+      --bg: #0a0f1c;
+      --bg-soft: #10182b;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #eef2ff;
+      --muted: #b8c2e0;
+      --accent: #91b8ff;
+      --accent-2: #c8d8ff;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(145, 184, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(200, 216, 255, 0.14), transparent 24%),
+        linear-gradient(180deg, #08101e 0%, #0b1222 60%, #09101d 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--max));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(10, 15, 28, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.96rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 6rem 0 4rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--accent-2);
+      font-size: 0.9rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.7rem, 6vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      max-width: 40rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #b4cfff);
+      color: #08101e;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .quick-info {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      padding: 0.7rem 0.95rem;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -20% -30% auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(145,184,255,0.45), transparent 68%);
+      pointer-events: none;
+    }
+
+    .profile-box {
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .profile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .profile-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent), #d9e5ff);
+      color: #09101d;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.3rem;
+    }
+
+    .profile-role {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .profile-name {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 1rem;
+    }
+
+    .stat h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.2rem;
+      color: var(--accent-2);
+    }
+
+    .stat p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    section {
+      padding: 1.5rem 0 4rem;
+    }
+
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-heading span {
+      color: var(--accent-2);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-heading p {
+      max-width: 42rem;
+      color: var(--muted);
+    }
+
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.35rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      font-size: 1.08rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      padding: 0.5rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(145,184,255,0.1);
+      border: 1px solid rgba(145,184,255,0.24);
+      color: var(--accent-2);
+      font-size: 0.88rem;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 1.15rem;
+      border-left: 2px solid rgba(145,184,255,0.25);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -0.43rem;
+      top: 0.2rem;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(145,184,255,0.14);
+    }
+
+    .timeline-item h3 {
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-meta {
+      color: var(--accent-2);
+      font-size: 0.9rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .timeline-item ul {
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    .timeline-item li + li {
+      margin-top: 0.3rem;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      min-height: 100%;
+    }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .project-year {
+      color: var(--accent-2);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .project-card p {
+      color: var(--muted);
+    }
+
+    .contact-card {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .contact-item {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      border-radius: 18px;
+      padding: 0.95rem 1rem;
+    }
+
+    .contact-item small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+
+    footer {
+      padding: 1.5rem 0 2.5rem;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid,
+      .contact-card,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 4.5rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner {
+        gap: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        gap: 0.85rem;
+      }
+
+      .hero h1 {
+        font-size: 2.7rem;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="hero">
-            <h1>Welcome to My Online Portfolio</h1>
-            <p>Showcasing my skills and experiences.</p>
-            <a href="#contact" class="cta-button">Contact Me</a>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">Megan Zhang</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container hero-grid">
+      <div class="fade-up">
+        <span class="eyebrow">Data Science • Berkeley • Portfolio</span>
+        <h1>Hi, I'm <span>Megan Zhang</span>.</h1>
+        <p>
+          I'm a UC Berkeley student studying Data Science with interests in robotics, machine learning,
+          analytics, and building projects that turn ideas into something practical and useful.
+          I enjoy combining technical problem-solving with creativity, whether that means coding,
+          designing visualizations, or exploring how data can improve real-world systems.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">View Projects</a>
+          <a class="btn btn-secondary" href="#contact">Get In Touch</a>
         </div>
-    </header>
-    <main>
-        <section id="skills">
-            <h2>Skills</h2>
+        <div class="quick-info">
+          <div class="pill">UC Berkeley</div>
+          <div class="pill">Expected Graduation: 2029</div>
+          <div class="pill">Python • SQL • HTML/CSS/JS</div>
+        </div>
+      </div>
+
+      <div class="hero-card fade-up">
+        <div class="profile-box">
+          <div class="profile-top">
+            <div>
+              <div class="profile-name">Megan Zhang</div>
+              <div class="profile-role">Student • Data Science • Technology & Analytics</div>
+            </div>
+            <div class="profile-avatar">MZ</div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat">
+              <h3>4+</h3>
+              <p>portfolio projects in data analysis and modeling</p>
+            </div>
+            <div class="stat">
+              <h3>3+</h3>
+              <p>core technical languages and tools used regularly</p>
+            </div>
+            <div class="stat">
+              <h3>2</h3>
+              <p>major academic communities: data + computing</p>
+            </div>
+            <div class="stat">
+              <h3>1</h3>
+              <p>goal: build thoughtful, real-world tech solutions</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="about">
+      <div class="container">
+        <div class="section-heading fade-up">
+          <span>About Me</span>
+          <h2>Background</h2>
+          <p>
+            I am a passionate and dedicated student currently studying at the University of California,
+            Berkeley. My academic journey has been shaped by experiences in programming, data science,
+            and technology-focused communities that have strengthened both my technical and collaborative skills.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card fade-up">
+            <h3>What I’m interested in</h3>
+            <p class="muted">
+              I’m especially interested in machine learning, analytics, and beginner-friendly robotics applications.
+              I like projects where data can inform decisions, reveal patterns, or improve how a system works.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Machine Learning</span>
+              <span class="tag">Data Analysis</span>
+              <span class="tag">Robotics</span>
+              <span class="tag">Visualization</span>
+            </div>
+          </div>
+
+          <div class="card fade-up">
+            <h3>How I work</h3>
+            <p class="muted">
+              I value clear communication, curiosity, and consistency. Whether I’m learning a new tool,
+              working with a team, or building a project from scratch, I focus on staying adaptable and
+              turning complex problems into manageable steps.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Problem-Solving</span>
+              <span class="tag">Team Collaboration</span>
+              <span class="tag">Communication</span>
+              <span class="tag">Adaptability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="container">
+        <div class="section-heading fade-up">
+          <span>Education</span>
+          <h2>Academic Journey</h2>
+          <p>My coursework and academic experiences reflect my growing interest in data, computing, and applied technology.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="card timeline-item fade-up">
+            <h3>University of California, Berkeley</h3>
+            <div class="timeline-meta">B.A. in Data Science • Expected 2029</div>
+            <p class="muted">
+              Studying data science while building a foundation in programming, analytics, and computational thinking.
+            </p>
+          </div>
+
+          <div class="card timeline-item fade-up">
+            <h3>Brown University Pre-College Program</h3>
+            <div class="timeline-meta">Summer Academic Experience</div>
+            <p class="muted">
+              Participated in a summer learning experience that expanded my perspective on advanced technical study and problem-solving.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="container">
+        <div class="section-heading fade-up">
+          <span>Experience</span>
+          <h2>Leadership & Community</h2>
+          <p>Experiences that reflect mentorship, learning, and involvement in technology-focused spaces.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="card timeline-item fade-up">
+            <h3>Girls Who Code</h3>
+            <div class="timeline-meta">Mentor</div>
             <ul>
-                <li>Web Development</li>
-                <li>JavaScript</li>
-                <li>React</li>
-                <li>Node.js</li>
+              <li>Assisted students in learning programming concepts and developing confidence in coding.</li>
+              <li>Helped create a supportive environment for exploring technology and problem-solving.</li>
             </ul>
-        </section>
-        <section id="education">
-            <h2>Education</h2>
-            <p>B.S. in Computer Science, XYZ University</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Meganzhang10. All Rights Reserved.</p>
-    </footer>
+          </div>
+
+          <div class="card timeline-item fade-up">
+            <h3>DIS Academy</h3>
+            <div class="timeline-meta">Program Participant</div>
+            <ul>
+              <li>Engaged in a summer program focused on data science, technology, and applied learning.</li>
+              <li>Strengthened exposure to collaborative technical work and emerging technology topics.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-heading fade-up">
+          <span>Projects</span>
+          <h2>Selected Work</h2>
+          <p>A mix of class and personal projects that highlight my interest in data exploration, modeling, and meaningful applications.</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card project-card fade-up">
+            <div class="project-top">
+              <h3>Geographic Maps Data Visualization</h3>
+              <div class="project-year">2026</div>
+            </div>
+            <p>
+              Built visualizations to represent geographic data in a clear and engaging way, focusing on how location-based information can tell a stronger story through design and structure.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Python</span>
+              <span class="tag">Visualization</span>
+              <span class="tag">Data Storytelling</span>
+            </div>
+          </article>
+
+          <article class="card project-card fade-up">
+            <div class="project-top">
+              <h3>Movie Genre Classification Model</h3>
+              <div class="project-year">2025</div>
+            </div>
+            <p>
+              Explored a genre prediction problem using Python, NumPy, and a k-nearest neighbors approach to understand how simple machine learning methods can classify patterns in data.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Python</span>
+              <span class="tag">NumPy</span>
+              <span class="tag">k-NN</span>
+            </div>
+          </article>
+
+          <article class="card project-card fade-up">
+            <div class="project-top">
+              <h3>World Population & Poverty Data Analysis</h3>
+              <div class="project-year">2025</div>
+            </div>
+            <p>
+              Analyzed relationships between population trends and poverty-related metrics to practice data cleaning, interpretation, and communicating findings from real-world datasets.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Python</span>
+              <span class="tag">Analytics</span>
+              <span class="tag">Real-World Data</span>
+            </div>
+          </article>
+
+          <article class="card project-card fade-up">
+            <div class="project-top">
+              <h3>Climate Change Trend Analysis</h3>
+              <div class="project-year">2025</div>
+            </div>
+            <p>
+              Examined trend data related to climate change, using quantitative analysis to better understand long-term patterns and present insights in a digestible format.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Python</span>
+              <span class="tag">Trend Analysis</span>
+              <span class="tag">Data Interpretation</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-heading fade-up">
+          <span>Skills</span>
+          <h2>Tools & Strengths</h2>
+          <p>The technical and interpersonal skills I’m continuing to build through coursework, projects, and experience.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card fade-up">
+            <h3>Programming</h3>
+            <p class="muted">Python, Java, JavaScript, SQL</p>
+          </div>
+          <div class="card fade-up">
+            <h3>Web Development</h3>
+            <p class="muted">HTML, CSS, responsive design, beginner front-end development</p>
+          </div>
+          <div class="card fade-up">
+            <h3>Data & Tools</h3>
+            <p class="muted">Pandas, Jupyter Notebook, Tableau, Git</p>
+          </div>
+          <div class="card fade-up">
+            <h3>Analytics</h3>
+            <p class="muted">Data cleaning, visualization, interpretation, introductory machine learning</p>
+          </div>
+          <div class="card fade-up">
+            <h3>Collaboration</h3>
+            <p class="muted">Communication, mentorship, teamwork, adaptability</p>
+          </div>
+          <div class="card fade-up">
+            <h3>Interests</h3>
+            <p class="muted">Robotics, analytics, technology for real-world impact</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-heading fade-up">
+          <span>Contact</span>
+          <h2>Let’s Connect</h2>
+          <p>Feel free to reach out for opportunities, collaborations, or just to say hi.</p>
+        </div>
+
+        <div class="card contact-card fade-up">
+          <div>
+            <h3>Contact Information</h3>
+            <p class="muted">
+              I’m always excited to connect with people interested in data science, technology, and creative project-building.
+            </p>
+            <div class="contact-list">
+              <div class="contact-item">
+                <small>Email</small>
+                <a href="mailto:meganzhang@berkeley.edu">meganzhang@berkeley.edu</a>
+              </div>
+              <div class="contact-item">
+                <small>Phone</small>
+                <a href="tel:9258198372">(925) 819-8372</a>
+              </div>
+              <div class="contact-item">
+                <small>GitHub Username</small>
+                <span>Meganzhang10</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="background: rgba(255,255,255,0.03); border-radius: 20px;">
+            <h3>Next Steps</h3>
+            <p class="muted">
+              This site can easily be expanded with a resume download, LinkedIn link, project screenshots,
+              and separate pages for each featured project.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Resume Link</span>
+              <span class="tag">LinkedIn</span>
+              <span class="tag">GitHub Repos</span>
+              <span class="tag">Project Images</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Megan Zhang. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+  </script>
 </body>
 </html>
